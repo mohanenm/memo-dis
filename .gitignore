@@ -40,7 +40,7 @@ src/tmp
 *.map
 
 #bin/build 
-bin/*
-build/*
+bin/
+build/
 
 

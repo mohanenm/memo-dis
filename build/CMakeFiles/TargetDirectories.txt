@@ -1,0 +1,3 @@
+/Users/ethan/Desktop/memo-system/memo-system/build/CMakeFiles/rebuild_cache.dir
+/Users/ethan/Desktop/memo-system/memo-system/build/CMakeFiles/edit_cache.dir
+/Users/ethan/Desktop/memo-system/memo-system/build/CMakeFiles/mem-hash.dir

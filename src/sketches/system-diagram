@@ -1,0 +1,14 @@
+basic diagram for memory system - based on research papers: 
+
+----------		thread(1)
+hash-table|===========> |memo-server|
+-----------			\	
+				 \
+				  \
+				   -----------> [directory]
+				    	      |
+					      |
+					      |	
+					      -------> queue[0]
+						     |___queue[1]
+

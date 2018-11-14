@@ -29,8 +29,6 @@ typedef struct commandLineArgs
 extern int strComp(char *s, char *t); //returns -2 if not equal -1 if equal
 void createDictionary(dArray *temp, int size);
 void printDictionary(dArray diction, int windowSize);
-void mapArrayToDictionary(dArray *tempD, stringArray *tempS, int length);
-void mapQueueToDictionary(dArray *tempD, queue *tempS, int length);
 void clearDictionary(dArray *diciton);
 void addWordToDictionary(dArray *temp, char* word);
 void clearQueue(queue* temp);
@@ -156,64 +154,16 @@ void clearQueue(queue* temp)
 {
   node* tempNode = temp->head;
   node* freeNode;
-  while(strcmp(tempNode->currentWord,(char*)"\0")!= 0)
+  while(tempNode->currentWorker->tid != -1)
   {
     freeNode = tempNode;
     tempNode= tempNode->after;
-    free(freeNode->currentWord);
+    free(freeNode->currentWorker);
     free(freeNode);
   }
   //free(temp);
 }
 
-void mapQueueToDictionary(dArray *diction, queue* array, int wlength)
-{
-  int position = 0;
-  node* tempNode = array->head;
-  char* empty = (char*)malloc(sizeof(char*));
-  strcpy(empty, (char*)"\0");
-  for(int i = 0; i < array->size; i++)
-    {
-      if(strComp(diction->val[i].word, empty) ==-1 && wordCheck(diction, tempNode->currentWord) == -1 && strlen(tempNode->currentWord) >= wlength)
-	    {
-        diction->val[i].word = (char*)malloc(strlen(tempNode->currentWord)+1);
-	      strcpy(diction->val[i].word, tempNode->currentWord);
-	      diction->val[i].amount += 1;
-        tempNode = tempNode->after;
-	      continue;
-	    }
-	  else if( (position = wordCheck(diction, tempNode->currentWord)) != -1)
-	    {
-	      diction->val[position].amount+=1;
-        tempNode = tempNode->after;
-	      continue;
-	    }
-    }
-
-    free(empty);
-}
-
-void mapArrayToDictionary(dArray *diction, stringArray *array, int wlength)
-{
-  int position = 0;
-  for(int i = 0; i < array->size; i++)
-    {
-      if(strComp(diction->val[i].word, (char*)"\0")==-1 && wordCheck(diction, array->words[i].word) == -1 && sizeof(array->words[i].word) >= wlength)
-	    {
-        diction->val[i].word = (char*)malloc(sizeof(array->words[i].word));
-	      strCopy(diction->val[i].word, array->words[i].word);
-	      diction->val[i].amount += 1;
-        diction->totalWords+=1;
-	      continue;
-	    }
-	  if( (position = wordCheck(diction, array->words[i].word)) != -1)
-	    {
-	      diction->val[position].amount+=1;
-	      continue;
-	    }
-    }
-
-}
 
 void freeAll(dArray* dict, char* tempWord, queue* queue)
 {

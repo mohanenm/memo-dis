@@ -5,11 +5,9 @@
 
 #define OPERATIONS  2
 
-typedef struct OPERATION{
-  char* op;
-}OPERATION;
-dArray operations;
 
+dArray operations;
+char* buffer;
 //Gets Operation and Creates workers able to do the task
 void init(){
   FILE* fp;
@@ -23,7 +21,13 @@ void init(){
   //parses config
   while((c = getc(fp)) != EOF){
     if(c == '\n'){
-      if(strcmp(tempWord, "Operations:") == 0){
+      if(strcmp(tempWord, "Operation:") == 0){
+        count = 1;
+      }else{
+        count =1;
+        addWordToDictionary(&operations, tempWord);
+      }
+      if(strcmp(tempWord, "Buffer:") == 0){
         count = 1;
       }else{
         count =1;
@@ -37,6 +41,10 @@ void init(){
       tempWord = realloc(tempWord, (sizeof(char)*count)+1);
     }
   }
-  printf("%s\n", operations.val[0].word);
+  if(strcmp(operations.val[0].word, "File") == 0){
+    buffer = (char*)malloc(sizeof(atoi(operations.val[1].word)));
+
+  }
+
 fclose(fp);
 }

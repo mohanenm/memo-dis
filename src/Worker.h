@@ -3,13 +3,25 @@
 #include <stdlib.h>
 
 
-typedef struct thread_t{
+typedef struct worker{
   long tid;
   OPERATION op;
+  int signal;
 }worker;
 
 
+worker* initWorker(worker* temp, OPERATION op, long tid){
+  temp->op = op;
+  temp->tid
+}
 
-worker* initWorker(worker* temp, OPERATION* op, long tid){
+void fileWork(worker* ){
 
+}
+
+worker* createBlankWorker(){
+  worker* temp = (worker*)malloc(sizeof(worker));
+  temp->tid =-1;
+  temp->signal = -1;
+  return temp;
 }

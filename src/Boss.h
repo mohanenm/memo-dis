@@ -8,6 +8,7 @@
 
 dArray operations;
 char* buffer;
+queue* Workers;
 //Gets Operation and Creates workers able to do the task
 void init(){
   FILE* fp;
@@ -47,4 +48,17 @@ void init(){
   }
 
 fclose(fp);
+}
+
+void startOperation(int workers, OPERATION op){
+  Workers = createQueue(workers);
+  worker* tempWorker = malloc(sizeof(worker));
+  for(int i =0; i < workers; i++){
+    printf("Here\n");
+    enqueue(Workers, initWorker(tempWorker, op, i));
+  }
+  free(tempWorker);
+  for(int i =0; i < workers; i++){
+    printf("%d\n", dequeue(Workers)->currentWorker->tid);
+  }
 }

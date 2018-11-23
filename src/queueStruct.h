@@ -6,6 +6,12 @@ typedef struct OPERATION{
   char* op;
 }OPERATION;
 
+OPERATION* createOp(char* op){
+  OPERATION* returnOp = malloc(sizeof(OPERATION));
+  returnOp->op = malloc(sizeof(char)*strlen(op));
+  strcpy(returnOp->op, op);
+  return returnOp;
+}
 #include "Worker.h"
 //to make a array of char arrays with out having to use multi
 //dimensional array
@@ -67,11 +73,11 @@ int strComp(char *s, char *t)
 
 queue* createQueue(int size)
 {
-  queue* returnQueue = (queue*)malloc(16*size);
+  queue* returnQueue = (queue*)malloc(sizeof(node)*size);
   returnQueue->size = size;
   returnQueue->elements = 0;
-  node* nullNode = (node*)malloc(sizeof(char*)+ sizeof(node*)*2);
-  nullNode->currentWorker = createBlankWorker();
+  node* nullNode = (node*)malloc(sizeof(node));
+  nullNode->currentWorker = createNullWorker();
   nullNode->before = nullNode;
   nullNode->after = nullNode;
   returnQueue->head = nullNode;
@@ -81,10 +87,16 @@ queue* createQueue(int size)
 
 void enqueue(queue* queue, worker* ele)
 {
-  node* temp = (node*)malloc(sizeof(node*)*2 + sizeof(char*));
-  node* nullNode = (node*)malloc(sizeof(node*)*2 + sizeof(char*));
-  nullNode->currentWorker = createBlankWorker();
-  temp->currentWorker = ele;
+  node* temp = (node*)malloc(sizeof(node));
+  node* nullNode = (node*)malloc(sizeof(node));
+  nullNode->currentWorker = malloc(sizeof(worker));
+  temp->currentWorker = malloc(sizeof(worker));
+  nullNode->currentWorker->tid = -2;
+  nullNode->currentWorker->signal = -1;
+  nullNode->currentWorker->op = *createOp("\0");
+  temp->currentWorker->tid = ele->tid;
+  temp->currentWorker->signal = ele->signal;
+  temp->currentWorker->op = ele->op;
   if(queue->elements == 0)
     {
       temp->before = nullNode;
@@ -95,14 +107,13 @@ void enqueue(queue* queue, worker* ele)
     }
   else if(queue->elements < queue->size)
     {
-      if(queue->tail->currentWorker->tid ==-1)
+      if(queue->tail->currentWorker->tid != -2)
 	{
-	  temp->before = queue->tail;
+    temp->before = queue->tail;
 	  temp->after = nullNode;
     queue->tail->after = temp;
 	  queue->tail = temp;
     queue->elements++;
-	  return;
 	}else
 	{
 	  temp->before = queue->head;

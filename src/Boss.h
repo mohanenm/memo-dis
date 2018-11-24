@@ -67,7 +67,6 @@ void startOperation(int workers, OPERATION op){
   free(tempWorker);
   printf("creating threads\n" );
   for(int t = 0; t < workers; t++){
-    printf("creating thread %d\n", queueGet(Workers, t)->tid);
     rc = pthread_create(&threads[t], &attr, FileJob, queueGet(Workers, t));
   }
   int working = 1;
@@ -76,14 +75,13 @@ void startOperation(int workers, OPERATION op){
     float av = 0.0;
     for(int t = 0; t < workers; t++){
       av += queueGet(Workers, t)->signal;
-      printf("Thread: %d has Signal %d\n", t, queueGet(Workers, t)->signal);
-      //printf("Signal %d from thread %d\n",queueGet(Workers, t)->signal, t);
-      //printf("Storage %s from thread %d\n",((char*)queueGet(Workers, t)->storage), t);
       }
-    printf("Average = %d\n", av);
     if(av/7 == 3.0){
       working = 0;
     }
   }
   printf("Outside While\n");
+  //TODO
+  printf("Rebuilding file... \n");
+
 }

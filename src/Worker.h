@@ -40,7 +40,7 @@ worker* createNullWorker(){
 }
 
 void copyWorker(worker* temp, worker* weezy){
-  printf("Within thread %d\n", weezy->tid);
+  //printf("Within thread %d\n", weezy->tid);
   temp->tid = weezy->tid;
   temp->op = weezy->op;
   temp->signal = weezy->signal;

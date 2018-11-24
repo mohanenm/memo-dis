@@ -152,10 +152,26 @@ int getQueueLength(queue* tempQ)
 {
   node* tempNode = tempQ->head;
   int counter = 0;
-  while(tempNode->currentWorker->tid != -1)
+  while(tempNode->currentWorker->tid != -2)
   {
     counter+=1;
     tempNode = tempNode->after;
   }
   return counter;
+}
+
+int checkSignals(queue* tempQ){
+  node* tempNode = tempQ->head;
+  int total = tempQ->head->currentWorker->total;
+  float average = 0.0;
+  while(tempNode->currentWorker->tid != -2)
+  {
+    average += tempNode->currentWorker->signal;
+    tempNode = tempNode->after;
+  }
+  if(average/total == 3){
+    return 0;
+  }else{
+    return 1;
+  }
 }

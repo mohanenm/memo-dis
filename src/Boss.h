@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Dictionary.h"
+#include "threadHub.h"
 
 #define OPERATIONS  2
 
@@ -51,13 +52,28 @@ fclose(fp);
 }
 
 void startOperation(int workers, OPERATION op){
+  pthread_t threads[workers];
+  pthread_attr_t attr;
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+  int rc;
+  printf("creating Workers queue\n" );
   Workers = createQueue(workers);
+  printf("creating tempWorker\n" );
   worker* tempWorker = malloc(sizeof(worker));
   for(int i =0; i < workers; i++){
-    enqueue(Workers, initWorker(tempWorker, op, i,workers));
+    enqueue(Workers, initWorker(tempWorker, op, i, workers, "testFile.txt" ));
   }
+  printf("Out of for loop\n" );
   free(tempWorker);
-  for(int i =0; i < workers; i++){
-    printf("%d\n", dequeue(Workers)->currentWorker->tid);
+  printf("creating threads\n" );
+  for(int t = 0; t < workers; t++){
+    rc = pthread_create(&threads[t], &attr, FileJob, queueGet(Workers, t));
   }
+  int working = 1;
+  printf("Working...");
+  while(working == 1){
+    working = checkSignals(Workers);
+  }
+
 }

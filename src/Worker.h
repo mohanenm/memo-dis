@@ -26,7 +26,6 @@ worker* initWorker(worker* temp, OPERATION op, long tid,int total,char* path){
 
 worker* createBlankWorker(){
   worker* temp = (worker*)malloc(sizeof(worker));
-  printf("Blank");
   temp->tid =-1;
   temp->signal = -1;
   return temp;
@@ -41,17 +40,20 @@ worker* createNullWorker(){
 }
 
 void copyWorker(worker* temp, worker* weezy){
+  printf("Within thread %d\n", weezy->tid);
   temp->tid = weezy->tid;
   temp->op = weezy->op;
   temp->signal = weezy->signal;
   temp->total = weezy->total;
-  free(temp->path);
+  //free(temp->path);
   temp->path = malloc(sizeof(char)*strlen(weezy->path) + 1);
   strcpy(temp->path, weezy->path);
 }
 
 void copyStorageString(worker* temp, worker* weezy){
-  
+  //free(temp->storage);
+  temp->storage = malloc(sizeof(char)*strlen(((char*)weezy->storage)));
+  strcpy(((char*)temp->storage), ((char*)weezy->storage));
 }
 
 void freeWorker(worker* temp){

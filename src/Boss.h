@@ -54,8 +54,7 @@ void startOperation(int workers, OPERATION op){
   Workers = createQueue(workers);
   worker* tempWorker = malloc(sizeof(worker));
   for(int i =0; i < workers; i++){
-    printf("Here\n");
-    enqueue(Workers, initWorker(tempWorker, op, i));
+    enqueue(Workers, initWorker(tempWorker, op, i,workers));
   }
   free(tempWorker);
   for(int i =0; i < workers; i++){

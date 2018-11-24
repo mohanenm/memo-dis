@@ -7,17 +7,15 @@ typedef struct worker{
   long tid;
   OPERATION op;
   int signal; //1 means queued, 2 means running, 3 means finished operation
+  int total; //total workers in a queue
+  void* storage;
 }worker;
 
-FILE* fileWork(worker* worker, int start, int end){
-
-}
-
-worker* initWorker(worker* temp, OPERATION op, long tid){
+worker* initWorker(worker* temp, OPERATION op, long tid,int total){
   temp->op = op;
-  printf("Init\n");
   temp->tid = tid;
   temp->signal = 1;
+  temp->total = total;
 }
 
 void startWorker(worker* temp, int start, int end){

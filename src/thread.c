@@ -12,7 +12,6 @@ struct thread_data {
 typedef struct thread_data thread_data_t;
 
 
-
 void *PrintHello(void *td_ptr)
 {
     thread_data_t *td = (thread_data_t *)td_ptr;
@@ -60,4 +59,3 @@ int main (int argc, char *argv[])
     printf("Exiting main thread\n");
     pthread_exit(NULL);
 }
-

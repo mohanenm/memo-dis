@@ -72,13 +72,7 @@ void startOperation(int workers, OPERATION op){
   int working = 1;
   printf("Working... \n");
   while(working == 1){
-    float av = 0.0;
-    for(int t = 0; t < workers; t++){
-      av += queueGet(Workers, t)->signal;
-      }
-    if(av/7 == 3.0){
-      working = 0;
-    }
+    working = checkSignals(Workers);
   }
   printf("Outside While\n");
   //TODO

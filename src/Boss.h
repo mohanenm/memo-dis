@@ -73,12 +73,13 @@ void startOperation(int workers, OPERATION op){
     rc = pthread_create(&threads[t], &attr, FileJob, queueGet(Workers, t));
   }
   int working = 1;
-  printf("Working...");
-  while(working == 1){
-    working = checkSignals(Workers);
+  printf("Working... \n");
+  //while(working == 1){
+    //working = checkSignals(Workers);
     for(int t = 0; t < workers; t++){
       printf("Signal %d from thread %d\n",queueGet(Workers, t)->signal, t);
+      printf("Storage %s from thread %d\n",((char*)queueGet(Workers, t)->storage), t);
+    //}
     }
-  }
 
 }

@@ -45,8 +45,17 @@ void copyWorker(worker* temp, worker* weezy){
   temp->op = weezy->op;
   temp->signal = weezy->signal;
   temp->total = weezy->total;
-  temp->storage = weezy->storage;
   free(temp->path);
   temp->path = malloc(sizeof(char)*strlen(weezy->path) + 1);
   strcpy(temp->path, weezy->path);
+}
+
+void copyStorageString(worker* temp, worker* weezy){
+  
+}
+
+void freeWorker(worker* temp){
+  free(temp->path);
+  free(temp->storage);
+  free(temp);
 }

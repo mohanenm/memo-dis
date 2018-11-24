@@ -15,25 +15,33 @@ void *FileJob(void* temp)
     copyWorker(weezy, (worker*)temp);
     FILE* fp = fopen(weezy->path , "r");
     int counter = 0;
-    char* storage = malloc(sizeof(char));
+    int pos = 0;
+    char* storage = malloc(sizeof(char) + 1 );
     int c = 0;
     while((c = getc(fp)) != EOF){
 
       if(counter%weezy->total == weezy->tid){
-        storage[counter] = c;
-        counter+=1;
-        char* tempStorage = malloc(sizeof(char)*counter + 1);
+        storage[pos] = c;
+        pos+=1;
+        char* tempStorage = malloc(sizeof(char)*pos + 1);
         strcpy(tempStorage, storage);
-        storage = realloc(storage, sizeof(char)*counter + 1);
+        storage = realloc(storage, sizeof(char)*pos + 1);
         strcpy(storage,tempStorage);
         free(tempStorage);
       }
 
+      counter+=1;
+
 
     }
-
-    weezy->storage = (char*)storage;
-    pthread_mutex_unlock(&lock);
+    weezy->storage = malloc(sizeof(char)* strlen(storage) + 1);
+    //printf("Storage: %s from thread %d \n", storage, weezy->tid);
+    strcpy ((char*)weezy->storage,storage);
+    printf("AFTER Thread\n");
+    copyWorker(weezy, ((worker*)temp));
+    freeWorker(weezy);
     ((worker*)temp)->signal=3;
+    fclose(fp);
+    pthread_mutex_unlock(&lock);
     pthread_exit(NULL);
 }

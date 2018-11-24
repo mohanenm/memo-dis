@@ -11,7 +11,8 @@ pthread_mutex_t lock;
 void *FileJob(void* temp)
 {
     pthread_mutex_lock(&lock);
-    worker* weezy = copyWorker((worker*)temp);
+    worker* weezy = malloc(sizeof(worker));
+    copyWorker(weezy, (worker*)temp);
     FILE* fp = fopen(weezy->path , "r");
     int counter = 0;
     char* storage = malloc(sizeof(char));
@@ -23,12 +24,11 @@ void *FileJob(void* temp)
         counter+=1;
         char* tempStorage = malloc(sizeof(char)*counter + 1);
         strcpy(tempStorage, storage);
-        storage = realloc(storage, sizeof(char)*counter);
+        storage = realloc(storage, sizeof(char)*counter + 1);
         strcpy(storage,tempStorage);
         free(tempStorage);
       }
 
-      counter+=1;
 
     }
 

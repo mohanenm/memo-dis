@@ -62,18 +62,23 @@ void startOperation(int workers, OPERATION op){
   printf("creating tempWorker\n" );
   worker* tempWorker = malloc(sizeof(worker));
   for(int i =0; i < workers; i++){
-    enqueue(Workers, initWorker(tempWorker, op, i, workers, "testFile.txt" ));
+    enqueue(Workers, initWorker(tempWorker, op, i, workers, "./testFile.txt" ));
+    //printf("%s",queueGet(Workers, i-1)->path);
   }
   printf("Out of for loop\n" );
   free(tempWorker);
   printf("creating threads\n" );
   for(int t = 0; t < workers; t++){
+    //printf("inside for loop \n");
     rc = pthread_create(&threads[t], &attr, FileJob, queueGet(Workers, t));
   }
   int working = 1;
   printf("Working...");
   while(working == 1){
     working = checkSignals(Workers);
+    for(int t = 0; t < workers; t++){
+      printf("Signal %d from thread %d\n",queueGet(Workers, t)->signal, t);
+    }
   }
 
 }

@@ -90,13 +90,11 @@ void enqueue(queue* queue, worker* ele)
   node* temp = (node*)malloc(sizeof(node));
   node* nullNode = (node*)malloc(sizeof(node));
   nullNode->currentWorker = malloc(sizeof(worker));
+  nullNode->currentWorker->path = malloc(sizeof(char)+1);
+  copyWorker(nullNode->currentWorker, createNullWorker());
   temp->currentWorker = malloc(sizeof(worker));
-  nullNode->currentWorker->tid = -2;
-  nullNode->currentWorker->signal = -1;
-  nullNode->currentWorker->op = *createOp("\0");
-  temp->currentWorker->tid = ele->tid;
-  temp->currentWorker->signal = ele->signal;
-  temp->currentWorker->op = ele->op;
+  temp->currentWorker->path = malloc(sizeof(char)+1);
+  copyWorker(temp->currentWorker, ele);
   if(queue->elements == 0)
     {
       temp->before = nullNode;

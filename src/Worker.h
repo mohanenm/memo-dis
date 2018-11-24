@@ -17,6 +17,10 @@ worker* initWorker(worker* temp, OPERATION op, long tid,int total,char* path){
   temp->tid = tid;
   temp->signal = 1;
   temp->total = total;
+  temp->path = malloc(sizeof(char)*strlen(path));
+  //printf("%s", path);
+  strcpy(temp->path, path);
+  return temp;
 }
 
 
@@ -30,17 +34,19 @@ worker* createBlankWorker(){
 
 worker* createNullWorker(){
   worker* temp = (worker*)malloc(sizeof(worker));
+  temp->path = malloc(sizeof(char)+1);
   temp->tid =-2;
   temp->signal = -1;
   return temp;
 }
 
-worker* copyWorker(worker* weezy){
-  worker* temp = malloc(sizeof(worker));
+void copyWorker(worker* temp, worker* weezy){
   temp->tid = weezy->tid;
   temp->op = weezy->op;
   temp->signal = weezy->signal;
   temp->total = weezy->total;
   temp->storage = weezy->storage;
-  return temp;
+  free(temp->path);
+  temp->path = malloc(sizeof(char)*strlen(weezy->path) + 1);
+  strcpy(temp->path, weezy->path);
 }

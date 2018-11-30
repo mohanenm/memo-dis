@@ -6,6 +6,8 @@ typedef struct OPERATION{
   char* op;
 }OPERATION;
 
+//SIMPLE A STRUCT WE CAN PASS A STRING INTO.
+// TODO SPECIFY THE ARGUMENTS FOR THE OPERATION RATHER THAN PUTTING EVERYTHING IN WORKER
 OPERATION* createOp(char* op){
   OPERATION* returnOp = malloc(sizeof(OPERATION));
   returnOp->op = malloc(sizeof(char)*strlen(op));

@@ -8,6 +8,8 @@
 pthread_mutex_t lock;
 
 //idea for dividing up a text file job
+//TAKE A LETTER AND DELETE IT
+//TODO ADD IF STATEMENT AND ADD VALUE TO WORKER
 void *FileJob(void* temp)
 {
     pthread_mutex_lock(&lock);

@@ -60,8 +60,12 @@ void startOperation(int workers, OPERATION op){
   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
   int rc;
   Workers = createQueue(workers);
+  // worker initiliazed
   worker* tempWorker = malloc(sizeof(worker));
+  //type of work initialized
   for(int i =0; i < workers; i++){
+  // enqueue work in a queue
+  // queue takes argument for threads
     enqueue(Workers, initWorker(tempWorker, op, i, workers, "./testFile.txt" ));
     //printf("%s",queueGet(Workers, i-1)->path);
   }
@@ -72,6 +76,7 @@ void startOperation(int workers, OPERATION op){
   printf("Out of for loop\n" );
   free(tempWorker);
   printf("creating threads\n" );
+  //THREADS ARE STARTED BUT FINISH AT DIFFERENT TIMES
   for(int t = 0; t < workers; t++){
     rc = pthread_create(&threads[t], &attr, FileJob, queueGet(Workers, t));
   }
@@ -82,8 +87,6 @@ void startOperation(int workers, OPERATION op){
   }
   printf("Outside While\n");
   printf("%ld\n", hashMap->items[((uintptr_t)item)%7].data->head->currentWorker->tid );
-
-  //TODO
   printf("Rebuilding file... \n");
 
 }

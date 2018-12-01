@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "Dictionary.h"
 #include "threadHub.h"
+#include "mem-hash.h"
 
 #define OPERATIONS  2
 
@@ -10,6 +11,7 @@
 dArray operations;
 char* buffer;
 queue* Workers;
+hash* hashMap;
 //Gets Operation and Creates workers able to do the task
 void init(){
   FILE* fp;
@@ -63,6 +65,10 @@ void startOperation(int workers, OPERATION op){
     enqueue(Workers, initWorker(tempWorker, op, i, workers, "./testFile.txt" ));
     //printf("%s",queueGet(Workers, i-1)->path);
   }
+  DataItem* item = initDataItem(createNullItem(), Workers);
+  hashMap = createHashMap(7);
+  printf("%ld\n", item->data->head->currentWorker->tid);
+  Insert(item,hashMap);
   printf("Out of for loop\n" );
   free(tempWorker);
   printf("creating threads\n" );
@@ -75,7 +81,13 @@ void startOperation(int workers, OPERATION op){
     working = checkSignals(Workers);
   }
   printf("Outside While\n");
+  printf("%ld\n", hashMap->items[((uintptr_t)item)%7].data->head->currentWorker->tid );
+
   //TODO
   printf("Rebuilding file... \n");
+
+}
+
+void createDirectory(char* directoryName){
 
 }

@@ -31,7 +31,7 @@ worker* createBlankWorker(){
   return temp;
 }
 
-worker* createNullWorker(){ // NULL WORKER IS WHAT WORK GETS ASSIGNED TO 
+worker* createNullWorker(){ // NULL WORKER IS WHAT WORK GETS ASSIGNED TO
   worker* temp = (worker*)malloc(sizeof(worker));
   temp->path = malloc(sizeof(char)+1);
   temp->tid =-2;
@@ -42,6 +42,7 @@ worker* createNullWorker(){ // NULL WORKER IS WHAT WORK GETS ASSIGNED TO
 // COPY VALUES OF ONE WORK TO ANOTHER
 void copyWorker(worker* temp, worker* weezy){
   //printf("Within thread %d\n", weezy->tid);
+  //temp = (worker*) malloc(sizeof(worker));
   temp->tid = weezy->tid;
   temp->op = weezy->op;
   temp->signal = weezy->signal;

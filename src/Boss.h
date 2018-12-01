@@ -69,24 +69,35 @@ void startOperation(int workers, OPERATION op){
     enqueue(Workers, initWorker(tempWorker, op, i, workers, "./testFile.txt" ));
     //printf("%s",queueGet(Workers, i-1)->path);
   }
-  DataItem* item = initDataItem(createNullItem(), Workers);
+  for(int t = 0; t < workers; t++){
+    //rc = pthread_create(&threads[t], &attr, FileJob, queueGet(hashMap->items[((uintptr_t)item)%7].data, t));
+    printf("%d\n", queueGet(Workers, t)->tid);
+  }
+  DataItem* item = createDataItem(Workers);
+  for(int t = 0; t < workers; t++){
+    //rc = pthread_create(&threads[t], &attr, FileJob, queueGet(hashMap->items[((uintptr_t)item)%7].data, t));
+    printf("%d\n", queueGet(Workers, t)->tid);
+  }
   hashMap = createHashMap(7);
-  printf("%ld\n", item->data->head->currentWorker->tid);
+  //printf("%s\n", item->data->currentWorker->tid);
   Insert(item,hashMap);
   printf("Out of for loop\n" );
   free(tempWorker);
   printf("creating threads\n" );
   //THREADS ARE STARTED BUT FINISH AT DIFFERENT TIMES
   for(int t = 0; t < workers; t++){
-    rc = pthread_create(&threads[t], &attr, FileJob, queueGet(Workers, t));
+    rc = pthread_create(&threads[t], &attr, FileJob, queueGet(hashMap->items[((uintptr_t)item)%7].data, t));
+    //printf("%d\n", queueGet(hashMap->items[((uintptr_t)item)%7].data, t)->tid);
   }
   int working = 1;
   printf("Working... \n");
   while(working == 1){
-    working = checkSignals(Workers);
+    working = checkSignals(hashMap->items[((uintptr_t)item)%7].data);
   }
   printf("Outside While\n");
-  printf("%ld\n", hashMap->items[((uintptr_t)item)%7].data->head->currentWorker->tid );
+  printf("Workers size %d\n", Workers->size);
+  printf("%ld\n", ((uintptr_t)item)%7);
+  printf("%d\n", hashMap->items[((uintptr_t)item)%7].data->size);
   printf("Rebuilding file... \n");
 
 }

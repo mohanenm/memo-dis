@@ -28,9 +28,13 @@ DataItem* createNullItem(){
 
 }
 
-DataItem* initDataItem(DataItem* item, queue* data){
-  item->data = realloc(data, sizeof(queue));
-  item->data = data;
+DataItem* createDataItem( queue* data){
+  DataItem* item = malloc(sizeof(DataItem));
+  item->data = createQueue(data->size);
+  for(int i = 0; i < data->size; i++){
+    enqueue(item->data, queueGet(data, i));
+  }
+  return item;
 }
 hash* createHashMap(int size){
   hash* result = (hash*)malloc(sizeof(hash));
@@ -66,8 +70,8 @@ void Insert(DataItem* item, hash* map){
 }
 
 void copyDataNewHash(DataItem* old, DataItem* new){
-  old = (DataItem*)realloc(new, sizeof(DataItem*));
-  old->data = malloc( sizeof(queue)*new->data->size);
+  //old = (DataItem*)realloc(new, sizeof(DataItem*));
+  //old->data = malloc( sizeof(queue)*new->data->size);
   old->data = new->data;
 }
 

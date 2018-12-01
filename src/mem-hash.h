@@ -52,8 +52,8 @@ hash* createHashMap(int size){
   return result;
 }
 
-void Insert(DataItem* item, hash* map){
-  long key = (uintptr_t)item%map->size;
+void Insert(DataItem* item, hash* map,char* tmpKey){
+  long key = tmpKey[0]%map->size;
   if(map->items[key].key == -1){
     printf("%ld\n", key);
     copyDataNewHash(&map->items[key], item);
@@ -70,13 +70,17 @@ void Insert(DataItem* item, hash* map){
 }
 
 void copyDataNewHash(DataItem* old, DataItem* new){
-  //old = (DataItem*)realloc(new, sizeof(DataItem*));
-  //old->data = malloc( sizeof(queue)*new->data->size);
-  old->data = new->data;
+  old->data = createQueue(new->data->size);
+  printf("In new hash\n");
+  for(int i = 0; i< new->data->size; i++){
+    enqueue(old->data, queueGet(new->data,i));
+  }
 }
 
 void copyDataExistingHash(DataItem* old, DataItem* new){
-  old->next = (DataItem*)realloc(new, sizeof(DataItem*));
-  //free(old->next);
-  old->next->data = new->data;
+  old->next->data = createQueue(new->data->size);
+  printf("In existing hash\n");
+  for(int i = 0; i< new->data->size; i++){
+    enqueue(old->next->data, queueGet(new->data,i));
+  }
 }

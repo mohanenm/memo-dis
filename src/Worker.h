@@ -42,20 +42,17 @@ worker* createNullWorker(){ // NULL WORKER IS WHAT WORK GETS ASSIGNED TO
 // COPY VALUES OF ONE WORK TO ANOTHER
 void copyWorker(worker* temp, worker* weezy){
   //printf("Within thread %d\n", weezy->tid);
-  //temp = (worker*) malloc(sizeof(worker));
   temp->tid = weezy->tid;
   temp->op = weezy->op;
   temp->signal = weezy->signal;
   temp->total = weezy->total;
-  //free(temp->path);
   temp->path = malloc(sizeof(char)*strlen(weezy->path) + 1);
   strcpy(temp->path, weezy->path);
 }
 //TAKES STORAGE(STRING)
 //CAST STORAGE SPACE FOR STRING
 void copyStorageString(worker* temp, worker* weezy){
-  //free(temp->storage);
-  temp->storage = malloc(sizeof(char)*strlen(((char*)weezy->storage)));
+  temp->storage = malloc(sizeof(char)*strlen(((char*)weezy->storage))+1);
   strcpy(((char*)temp->storage), ((char*)weezy->storage));
 }
 //MAKES SURE ALL POINTERS INSIDE THE STRUCT ARE FREED

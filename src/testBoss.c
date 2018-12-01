@@ -3,5 +3,5 @@
 void main(){
 //  init();
   OPERATION* op = createOp((char*)"File");
-  startOperation(7, *op);
+  //startOperation(7, *op);
 }

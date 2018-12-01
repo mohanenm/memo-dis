@@ -22,29 +22,21 @@ void *FileJob(void* temp)
     char* storage = malloc(sizeof(char) + 1 );
     int c = 0;
     while((c = getc(fp)) != EOF){
-      if(counter%weezy->total == weezy->tid){
+
         storage[pos] = c;
         pos+=1;
-        char* tempStorage = malloc(sizeof(char)*pos + 1);
-        strcpy(tempStorage, storage);
-        free(storage);
-        storage = malloc(sizeof(char)*pos + 1);
-        strcpy(storage,tempStorage);
-        free(tempStorage);
-      }
-
-      counter+=1;
-
+        storage = realloc(storage, sizeof(char)*pos + 1);
 
     }
+    pos=0;
     //printf("Characters Caught %d\n", strlen(storage) );
-    weezy->storage = malloc(sizeof(char)* strlen(storage) + 1);
+    weezy->storage = (char*)malloc(sizeof(char)*strlen(storage)+ 1);
     //printf("Storage: %s from thread %d \n", storage, weezy->tid);
     strcpy ((char*)weezy->storage,storage);
-    //printf("AFTER Thread\n");
-    copyWorker(weezy, ((worker*)temp));
+    //rintf("AFTER Thread\n");
     copyStorageString(((worker*)temp),weezy);
     freeWorker(weezy);
+    free(storage);
     ((worker*)temp)->signal=3;
     fclose(fp);
     pthread_mutex_unlock(&lock);

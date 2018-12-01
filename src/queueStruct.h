@@ -4,14 +4,16 @@
 
 typedef struct OPERATION{
   char* op;
+  int lock; //either 1 or 0, 1 means locked 0 means not locked.
 }OPERATION;
 
 //SIMPLE A STRUCT WE CAN PASS A STRING INTO.
 // TODO SPECIFY THE ARGUMENTS FOR THE OPERATION RATHER THAN PUTTING EVERYTHING IN WORKER
-OPERATION* createOp(char* op){
+OPERATION* createOp(char* op, int lock){
   OPERATION* returnOp = malloc(sizeof(OPERATION));
   returnOp->op = malloc(sizeof(char)*strlen(op));
   strcpy(returnOp->op, op);
+  returnOp->lock = lock;
   return returnOp;
 }
 #include "Worker.h"

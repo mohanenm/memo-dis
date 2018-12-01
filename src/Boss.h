@@ -41,11 +41,11 @@ queue* Workers;
 // }
 
 // void startOperation(int workers, OPERATION op){
-//   pthread_t threads[workers];
-//   pthread_attr_t attr;
-//   pthread_attr_init(&attr);
-//   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-//   int rc;
+//    pthread_t threads[workers];
+//    pthread_attr_t attr;
+//    pthread_attr_init(&attr);
+//    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
+//    int rc;
 //   Workers = createQueue(workers);
 //   // worker initiliazed
 //   worker* tempWorker = malloc(sizeof(worker));
@@ -83,9 +83,10 @@ queue* Workers;
 //
 // }
 
-void createDirectory(char* directoryName, int size, dArray* directoies, hash* hashMap){
-  queue* directory = createQueue(size);
+void createDirectory(char* directoryName, dArray* directoies, hash* hashMap){
+
+  queue* directory = createQueue();
   addWordToDictionary(directoies, directoryName);
   DataItem* tempItem = createDataItem(directory);
-  Insert(tempItem, hashMap,directoryName);
+  Insert(tempItem, hashMap, directoryName);
 }

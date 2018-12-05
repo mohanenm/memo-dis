@@ -2,25 +2,35 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-hash* hashMap;
+char* inputHandler(char* buffer);
+
 void main(int argc, char *args[]){
-//  init();
-  //OPERATION* op = createOp((char*)"File");
-  //startOperation(7, *op);
-  long unsigned int address;
-  ARGS* arguments = commandLineParser(args,argc);
-  if(arguments->checker == 1){
-    sscanf(arguments->memAddress, "%lx", &address);
-    hashMap = (hash*)(uintptr_t)address;
-    printf("%lx\n", (uintptr_t)hashMap);
-  }else{
-    printf("no hashMap\n");
+  init(4,2);
+  int wordPos =0;
+  int c = 0;
+  char* buffer;
+  printf("Enter a command(put, get, or read)\n");
+  char* command = (char*)inputHandler(buffer);
+  if(strcmp(command,"put") == 0){
+    printf("Enter a folder name.\n");
+    char* folderName = (char*)inputHandler(buffer);
+    printf("Enter a file name.\n");
+    char* fileName = (char*)inputHandler(buffer);
+    put(folderName,fileName);
   }
-  char strMemAddress[16];
-  ultoa (address,strMemAddress,16);
-  char* temp = malloc(sizeof(char)*strlen(strMemAddress)+5);
-  strcpy(temp, strMemAddress);
-  strcat(temp, " ;'");
-  createWindow(temp);
-  //sleep(4);
+
+}
+
+
+
+
+char* inputHandler(char* buffer){
+  int wordPos =0;
+  int c = 0;
+  buffer = malloc(sizeof(128));
+  while((c = getchar()) != '\n'){
+    buffer[wordPos] = c;
+    wordPos+=1;
+  }
+  return buffer;
 }

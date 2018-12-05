@@ -1,20 +1,30 @@
 #include "Boss.h"
 #include <unistd.h>
 
-hash* hashMap;
-dArray* directories;
 
+typedef struct masterController{
+  int folders;
+  int FIF; //files in folders
+  hash* director;
+  dArray* directories;
+}master;
 
-//for demo purposes
-void createWindow(char* arguments){
-  hashMap = createHashMap(1);
-  sleep(5);
-  char* source = "gnome-terminal  -x sh -c 'cd ./Documents/Code/memo-system/src; ./test.o -m ";
-  char* temp = malloc(strlen(source)*sizeof(char) + strlen(arguments));
-  strcpy(temp, source);
-  char* commands = strcat(temp, arguments);
-  int exit_status = system(commands);
+master* controller;
+
+void init(int folders, int files){
+  controller = malloc(sizeof(master));
+  controller->directories = malloc(sizeof(dArray));
+  createDictionary(controller->directories,folders);
+  controller->director = malloc(sizeof(hash));
+  controller->director = createHashMap(folders);
+  controller->FIF = files;
+  controller->folders = folders;
+
 }
-void put(char* folderName, char* fileName){
 
+void put(char* folderName, char* fileName){
+  if(wordCheck(controller->directories, folderName) == -1){
+    createDirectory(folderName, controller->directories, controller->director, controller->FIF);
+    printDictionary(*controller->directories,4);
+  }
 }

@@ -24,7 +24,8 @@ typedef struct commandLineArgs
   int wlength;
   int queueSize;
   int checker;
-  char* memAddress;
+  long unsigned int memAddressInt;
+  char* memAddressStr;
 }ARGS;
 
 
@@ -48,6 +49,7 @@ ARGS* commandLineParser(char* args[], int length)
   int queueSize= 1000;
   char* memAddress;
   int checker =0;
+  ARGS *arguments = (ARGS*)malloc(sizeof(ARGS));
   //printf("In args1");
 
     for(int i = 0; i < length; i++)
@@ -62,27 +64,28 @@ ARGS* commandLineParser(char* args[], int length)
 	}
       if(strComp(args[i], (char*)"-m") == -1)
 	{
-    //printf("In args");
-    memAddress = malloc(strlen(args[i+1])+1);
-    strcpy(memAddress, args[i+1]);
+    //printf("In args");'
+    arguments->memAddressStr = malloc(sizeof(char)*strlen(args[i+1])+1);
+    strcpy(args[i+1],arguments->memAddressStr);
+    sscanf(args[i+1], "%lx", &arguments->memAddressInt);
+
     checker = 1;
 
 	}
 
     }
 
-    ARGS *arguments = (ARGS*)malloc(sizeof(ARGS));
+
     arguments->checker = checker;
-    if(checker == 0){
-      memAddress = malloc(strlen("00000000")+1);
-      strcpy(memAddress, "00000000");
+    if(checker != 0){
+      arguments->memAddressInt = 0;
+      arguments->memAddressStr = malloc(3);
+      arguments->memAddressStr = "";
     }
     //printf("In args");
     arguments->windowSize = windowSize;
     arguments->queueSize = queueSize;
     arguments->wlength = wlength;
-    arguments->memAddress = malloc(strlen(memAddress));
-    strCopy(arguments->memAddress, memAddress);
     return arguments;
 }
 
@@ -121,13 +124,13 @@ void printDictionary(dArray diction, int windowSize)
     {
       for (int j = 0; j < diction.size; j++)
 	     {
-	        if(diction.val[j].amount > highestVal)
+	        if(diction.val[j].amount >= highestVal)
 	        {
 	           highestVal = diction.val[j].amount;
 	           pos = j;
 	        }
 	     }
-      if(diction.val[pos].amount >= 1)
+      if(diction.val[pos].amount >= 0)
 	     {
          printf("%s:%d \t", diction.val[pos].word, highestVal);
          diction.val[pos].amount = -diction.val[pos].amount;

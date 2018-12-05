@@ -8,7 +8,7 @@
 #define OPERATIONS  2
 
 
-dArray directories;
+dArray directoryInBoss;
 queue* Workers;
 //Gets Operation and Creates workers able to do the task
 // void init(int size){
@@ -85,7 +85,7 @@ queue* Workers;
 
 void createDirectory(char* directoryName, dArray* directoies, hash* hashMap){
 
-  queue* directory = createQueue();
+  queue* directory = createQueue(1);
   addWordToDictionary(directoies, directoryName);
   DataItem* tempItem = createDataItem(directory);
   Insert(tempItem, hashMap, directoryName);

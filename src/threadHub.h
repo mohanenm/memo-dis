@@ -47,8 +47,8 @@ void *FileJob(void* temp)
     pthread_exit(NULL);
 }
 
-void hubLock(worker* thread){
-  pthread_t threads[workers];
+void hubLock(worker* thread, int size){
+  pthread_t threads[size];
   pthread_attr_t attr;
   pthread_attr_init(&attr);
   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);

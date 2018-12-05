@@ -23,6 +23,8 @@ typedef struct commandLineArgs
   int windowSize;
   int wlength;
   int queueSize;
+  int checker;
+  char* memAddress;
 }ARGS;
 
 
@@ -44,6 +46,9 @@ ARGS* commandLineParser(char* args[], int length)
   int windowSize = 10;
   int wlength = 6;
   int queueSize= 1000;
+  char* memAddress;
+  int checker =0;
+  //printf("In args1");
 
     for(int i = 0; i < length; i++)
     {
@@ -55,16 +60,29 @@ ARGS* commandLineParser(char* args[], int length)
 	{
 	  wlength = atoi(args[i+1]);
 	}
-      if(strComp(args[i], (char*)"-n") == -1)
+      if(strComp(args[i], (char*)"-m") == -1)
 	{
-	  queueSize = atoi(args[i+1]);
+    //printf("In args");
+    memAddress = malloc(strlen(args[i+1])+1);
+    strcpy(memAddress, args[i+1]);
+    checker = 1;
+
 	}
+
     }
 
-    ARGS *arguments = (ARGS*)malloc(sizeof(int)*3);
+    ARGS *arguments = (ARGS*)malloc(sizeof(ARGS));
+    arguments->checker = checker;
+    if(checker == 0){
+      memAddress = malloc(strlen("00000000")+1);
+      strcpy(memAddress, "00000000");
+    }
+    //printf("In args");
     arguments->windowSize = windowSize;
     arguments->queueSize = queueSize;
     arguments->wlength = wlength;
+    arguments->memAddress = malloc(strlen(memAddress));
+    strCopy(arguments->memAddress, memAddress);
     return arguments;
 }
 

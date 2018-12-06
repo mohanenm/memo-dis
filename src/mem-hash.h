@@ -36,7 +36,7 @@ DataItem* createDataItem( queue* data){
   }
   return item;
 }
-hash* createHashtempMap(int size){
+hash* createHashMap(int size){
   hash* result = (hash*)malloc(sizeof(hash));
   result->size = size;
   result->items = (DataItem*)malloc(sizeof(DataItem)*size);
@@ -52,7 +52,7 @@ hash* createHashtempMap(int size){
 }
 
 void Insert(DataItem* item, hash* tempMap,char* tmpKey){
-  long key = tmpKey[0]%tempMap->size;
+  long key = tmpKey[0]%(tempMap->size);
   if(tempMap->items[key].key == -1){
     printf("%ld\n", key);
     item->key = key;
@@ -70,12 +70,12 @@ void Insert(DataItem* item, hash* tempMap,char* tmpKey){
   }
 }
 
-queue* getHash(char* key, hash* temptempMap){
-  long key2 = key[0]%tempMap->size;
+queue* getHash(char* key, hash* tempMap){
+  long key2 = key[0]%(tempMap->size);
   printf("Current key: %ld \t Current name: %s\n", key2, key);
   if(tempMap->items[key2].key != -1){
     long temp = tempMap->items[key2].key;
-    DataItem* tempItem = tempMap->items[key2];
+    DataItem* tempItem = &tempMap->items[key2];
     while(temp != -1){
       if(strcmp(key,tempItem->data->name) == 0){
         printf("Within tempItem return. Queue name: %s\n", tempItem->data->name);

@@ -11,7 +11,7 @@ typedef struct OPERATION{
 // TODO SPECIFY THE ARGUMENTS FOR THE OPERATION RATHER THAN PUTTING EVERYTHING IN WORKER
 OPERATION* createOp(char* op, int lock){
   OPERATION* returnOp = malloc(sizeof(OPERATION));
-  returnOp->op = malloc(sizeof(char)*strlen(op));
+  returnOp->op = malloc(sizeof(char)*strlen(op)+1);
   strcpy(returnOp->op, op);
   returnOp->lock = lock;
   return returnOp;

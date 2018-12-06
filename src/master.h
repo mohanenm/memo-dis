@@ -22,9 +22,23 @@ void init(int folders, int files){
 
 }
 
-void put(char* folderName, char* fileName){
+void put(char* folderName, char* fileName, char* path){
   if(wordCheck(controller->directories, folderName) == -1){
+    //addWordToDictionary(controller->directoies, fileName);
     createDirectory(folderName, controller->directories, controller->director, controller->FIF);
-    printDictionary(*controller->directories,4);
+    printf("%s\n",controller->directories->val[0].word);
+    if(strcmp(path,"na")!= 0){
+      printf("about to put file in directory.\n");
+      fileToDirectory(fileName,path,getHash(folderName,controller->director),folderName,getHash(folderName,controller->director)->size);
+    }else{
+      printf("File already exists.\n");
+    }
+
   }
+}
+
+void done(){
+  freeHash(controller->director);
+  clearDictionary(controller->directories);
+  free(controller);
 }

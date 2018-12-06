@@ -12,7 +12,7 @@ pthread_mutex_t lock;
 //TODO ADD IF STATEMENT AND ADD VALUE TO WORKER
 void *FileJob(void* temp)
 {
-    if(((worker*)temp)->op.lock == 1){
+    if(((worker*)temp)->op->lock == 1){
       pthread_mutex_lock(&lock);
     }
     //printf("\nCopying worker %d\n\n", (((worker*)temp)->tid));
@@ -41,10 +41,15 @@ void *FileJob(void* temp)
     free(storage);
     ((worker*)temp)->signal=3;
     fclose(fp);
-    if(((worker*)temp)->op.lock == 1){
+    if(((worker*)temp)->op->lock == 1){
       pthread_mutex_unlock(&lock);
     }
     pthread_exit(NULL);
+}
+
+
+void *openFile(void* temp){
+
 }
 
 void hubLock(worker* thread, int size){

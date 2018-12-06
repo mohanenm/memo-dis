@@ -23,9 +23,6 @@ typedef struct commandLineArgs
   int windowSize;
   int wlength;
   int queueSize;
-  int checker;
-  long unsigned int memAddressInt;
-  char* memAddressStr;
 }ARGS;
 
 
@@ -62,26 +59,9 @@ ARGS* commandLineParser(char* args[], int length)
 	{
 	  wlength = atoi(args[i+1]);
 	}
-      if(strComp(args[i], (char*)"-m") == -1)
-	{
-    //printf("In args");'
-    arguments->memAddressStr = malloc(sizeof(char)*strlen(args[i+1])+1);
-    strcpy(args[i+1],arguments->memAddressStr);
-    sscanf(args[i+1], "%lx", &arguments->memAddressInt);
-
-    checker = 1;
-
-	}
 
     }
 
-
-    arguments->checker = checker;
-    if(checker != 0){
-      arguments->memAddressInt = 0;
-      arguments->memAddressStr = malloc(3);
-      arguments->memAddressStr = "";
-    }
     //printf("In args");
     arguments->windowSize = windowSize;
     arguments->queueSize = queueSize;
@@ -175,11 +155,12 @@ void clearQueue(queue* temp)
 {
   node* tempNode = temp->head;
   node* freeNode;
+  free(temp->name);
   while(tempNode->currentWorker->tid != -1)
   {
     freeNode = tempNode;
     tempNode= tempNode->after;
-    free(freeNode->currentWorker);
+    freeWorker(freeNode->currentWorker);
     free(freeNode);
   }
   //free(temp);

@@ -16,8 +16,16 @@ void main(int argc, char *args[]){
     char* folderName = (char*)inputHandler(buffer);
     printf("Enter a file name.\n");
     char* fileName = (char*)inputHandler(buffer);
-    put(folderName,fileName);
+    printf("Enter a path to the file.\n");
+    char* path = (char*)inputHandler(buffer);
+    put(folderName,fileName,path);
+    free(path);
+    free(fileName);
+    free(folderName);
+    free(buffer);
   }
+
+ done();
 
 }
 

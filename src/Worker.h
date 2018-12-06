@@ -5,19 +5,25 @@
 
 typedef struct worker{
   long tid;
-  OPERATION op;
+  OPERATION* op;
   int signal; //1 means queued, 2 means running, 3 means finished operation
   int total; //total workers in a queue
   char* path;
   void* storage;
+  char* name;
 }worker;
 
-worker* initWorker(worker* temp, OPERATION op, long tid,int total,char* path){
-  temp->op = op;
+worker* initWorker(worker* temp, OPERATION* op, long tid,int total,char* path,char* name){
+  temp->op = malloc(sizeof(OPERATION));
+  temp->op->op = malloc(sizeof(char)* strlen(op->op));
+  strcpy(temp->op->op , op->op);
   temp->tid = tid;
   temp->signal = 1;
   temp->total = total;
+  temp->op->lock = op->lock;
   temp->path = malloc(sizeof(char)*strlen(path));
+  temp->name = malloc(sizeof(char)*strlen(name));
+  strcpy(temp->name,name);
   //printf("%s", path);
   strcpy(temp->path, path);
   return temp;
@@ -34,6 +40,7 @@ worker* createBlankWorker(){
 worker* createNullWorker(){ // NULL WORKER IS WHAT WORK GETS ASSIGNED TO
   worker* temp = (worker*)malloc(sizeof(worker));
   temp->path = malloc(sizeof(char)+1);
+  temp->name = malloc(sizeof(char)+1);
   temp->tid =-2;
   temp->signal = -1;
   return temp;
@@ -47,6 +54,8 @@ void copyWorker(worker* temp, worker* weezy){
   temp->signal = weezy->signal;
   temp->total = weezy->total;
   temp->path = malloc(sizeof(char)*strlen(weezy->path) + 1);
+  temp->name = malloc(sizeof(char)* strlen(weezy->name)+1 );
+  strcpy(temp->name, weezy->name);
   strcpy(temp->path, weezy->path);
 }
 //TAKES STORAGE(STRING)
@@ -59,5 +68,8 @@ void copyStorageString(worker* temp, worker* weezy){
 void freeWorker(worker* temp){
   free(temp->path);
   free(temp->storage);
+  free(temp->name);
+  free(temp->op->op);
+  free(temp->op);
   free(temp);
 }

@@ -5,14 +5,20 @@
 #include "threadHub.h"
 #include "mem-hash.h"
 
-#define OPERATIONS  2
 
 
-
-void createDirectory(char* directoryName, dArray* directoies, hash* hashMap, int size){
+void createDirectory(char* directoryName, dArray* directories, hash* hashMap, int size){
   printf("Inside create Directory\n");
   queue* directory = createQueue(size);
-  addWordToDictionary(directoies, directoryName);
+  setQueueName(directory, directoryName);
+  addWordToDictionary(directories, directoryName);
   DataItem* tempItem = createDataItem(directory);
   Insert(tempItem, hashMap, directoryName);
+}
+
+void fileToDirectory(char* fileName, char* path, queue* q, char* folderName, int soq){
+  worker* temp = malloc(sizeof(worker));
+  OPERATION* op = createOp("file", 1);
+  printf("Inside fileToDirectory\n");
+  enqueue(q, initWorker(temp,op,getQueueLength(q),soq,path,fileName));
 }

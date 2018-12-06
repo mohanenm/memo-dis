@@ -42,6 +42,7 @@ typedef struct queue
 {
   node* head;
   node* tail;
+  char* name;
   int size;
   int elements;
 }queue;
@@ -77,9 +78,11 @@ int strComp(char *s, char *t)
 
 queue* createQueue(int size)
 {
-  queue* returnQueue = (queue*)malloc(sizeof(node)*size);
+  queue* returnQueue = (queue*)malloc(sizeof(node)*size + sizeof(node));
   returnQueue->size = size;
   returnQueue->elements = 0;
+  returnQueue->name = malloc(sizeof(char)+5);
+  strcpy(returnQueue->name,"none");
   node* nullNode = (node*)malloc(sizeof(node));
   nullNode->currentWorker = createNullWorker();
   nullNode->before = nullNode;
@@ -89,15 +92,23 @@ queue* createQueue(int size)
   return returnQueue;
 }
 
+void setQueueName(queue* q, char* name){
+  q->name = malloc(sizeof(char)*strlen(name)+1);
+  strcpy(q->name,name);
+}
+
 void enqueue(queue* queue, worker* ele)
 {
   node* temp = (node*)malloc(sizeof(node));
   node* nullNode = (node*)malloc(sizeof(node));
   nullNode->currentWorker = malloc(sizeof(worker));
   nullNode->currentWorker->path = malloc(sizeof(char)+1);
+  nullNode->currentWorker->name = malloc(sizeof(char)+1);
   copyWorker(nullNode->currentWorker, createNullWorker());
   temp->currentWorker = malloc(sizeof(worker));
   temp->currentWorker->path = malloc(sizeof(char)+1);
+  temp->currentWorker->name = malloc(sizeof(char)+1);
+  printf("Inside the enque after malloc.\n");
   copyWorker(temp->currentWorker, ele);
   if(queue->elements == 0)
     {

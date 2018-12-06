@@ -21,7 +21,7 @@ void *FileJob(void* temp)
     copyWorker(weezy, (worker*)temp);
     FILE* fp = fopen(((worker*)temp)->path , "r");
     int pos = 0;
-    char* storage = malloc(sizeof(char)+1);
+    char* storage = malloc(sizeof(char));
     int c = 0;
     printf("Right before loop.\n");
     while((c = getc(fp)) != EOF){
@@ -63,11 +63,9 @@ void threadHub(worker* thread,int size){
     if(strcmp(thread->op->op,"put") ==0 ){
       thread->op->lock = 1;
       rc = pthread_create(&threads[0], &attr, FileJob, thread);
+      pthread_join(threads[0], &status);
     }
 
-  while(thread->signal!= 3){
-    //printf("loading...(thread)\n");
-  }
   printf("%s",(char*)thread->storage);
   pthread_attr_destroy(&attr);
 

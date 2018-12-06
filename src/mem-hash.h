@@ -71,15 +71,17 @@ void Insert(DataItem* item, hash* map,char* tmpKey){
 queue* getHash(char* key, hash* map){
   long key2 = key[0]%map->size;
   if(map->items[key2].key != -1){
-    if(strcmp(key,map->items[key2].data->name) == 0){
-      long temp = map->items[key2].key;
-      DataItem* tempItem = &map->items[key2];
-      while(temp != -1){
-        temp = map->items[key2].next->key;
-        tempItem = tempItem->next;
+    long temp = map->items[key2].key;
+    DataItem* tempItem = &map->items[key2];
+    while(temp != -1){
+      printf("in here");
+      if(strcmp(key,tempItem->data->name) == 0){
+        return tempItem->data;
       }
-      return tempItem->data;
+      temp = map->items[key2].next->key;
+      tempItem = tempItem->next;
     }
+    return tempItem->data;
   }else{
     queue* noQueue = createQueue(1);
     noQueue->name = malloc(sizeof(char)*strlen("none")+1);

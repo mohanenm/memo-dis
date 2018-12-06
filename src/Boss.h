@@ -18,7 +18,9 @@ void createDirectory(char* directoryName, dArray* directories, hash* hashMap, in
 
 void fileToDirectory(char* fileName, char* path, queue* q, char* folderName, int soq){
   worker* temp = malloc(sizeof(worker));
-  OPERATION* op = createOp("file", 1);
+  OPERATION* op = createOp("put", 1);
   printf("Inside fileToDirectory\n");
   enqueue(q, initWorker(temp,op,getQueueLength(q),soq,path,fileName));
+  threadHub(queueGet(q,getQueueLength(q)-1),1);
+
 }

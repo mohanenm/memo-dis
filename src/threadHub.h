@@ -15,21 +15,23 @@ void *FileJob(void* temp)
     if(((worker*)temp)->op->lock == 1){
       pthread_mutex_lock(&lock);
     }
+    printf("%s\n", ((worker*)temp)->path);
     //printf("\nCopying worker %d\n\n", (((worker*)temp)->tid));
     worker* weezy = malloc(sizeof(worker));
     copyWorker(weezy, (worker*)temp);
-    FILE* fp = fopen(weezy->path , "r");
-    int counter = 0;
+    FILE* fp = fopen(((worker*)temp)->path , "r");
     int pos = 0;
-    char* storage = malloc(sizeof(char) + 1 );
+    char* storage = malloc(sizeof(char)+1);
     int c = 0;
+    printf("Right before loop.\n");
     while((c = getc(fp)) != EOF){
-
+      printf("In loop.\n");
         storage[pos] = c;
         pos+=1;
         storage = realloc(storage, sizeof(char)*pos + 1);
 
     }
+    printf("middle of thread.\n");
     pos=0;
     //printf("Characters Caught %d\n", strlen(storage) );
     weezy->storage = (char*)malloc(sizeof(char)*strlen(storage)+ 1);
@@ -44,19 +46,30 @@ void *FileJob(void* temp)
     if(((worker*)temp)->op->lock == 1){
       pthread_mutex_unlock(&lock);
     }
+    printf("end of thread.\n");
     pthread_exit(NULL);
 }
 
 
-void *openFile(void* temp){
 
-}
-
-void hubLock(worker* thread, int size){
+void threadHub(worker* thread,int size){
   pthread_t threads[size];
   pthread_attr_t attr;
   pthread_attr_init(&attr);
   pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
   int rc;
+  void* status;
+
+    if(strcmp(thread->op->op,"put") ==0 ){
+      thread->op->lock = 1;
+      rc = pthread_create(&threads[0], &attr, FileJob, thread);
+    }
+
+  while(thread->signal!= 3){
+    //printf("loading...(thread)\n");
+  }
+  printf("%s",(char*)thread->storage);
+  pthread_attr_destroy(&attr);
+
 
 }

@@ -78,10 +78,10 @@ int strComp(char *s, char *t)
 
 queue* createQueue(int size)
 {
-  queue* returnQueue = (queue*)malloc(sizeof(node)*size + sizeof(node));
+  queue* returnQueue = (queue*)malloc(sizeof(queue));
   returnQueue->size = size;
   returnQueue->elements = 0;
-  returnQueue->name = malloc(sizeof(char)+5);
+  returnQueue->name = malloc(sizeof(char)*4 + 1);
   strcpy(returnQueue->name,"none");
   node* nullNode = (node*)malloc(sizeof(node));
   nullNode->currentWorker = createNullWorker();
@@ -108,7 +108,6 @@ void enqueue(queue* queue, worker* ele)
   temp->currentWorker = malloc(sizeof(worker));
   temp->currentWorker->path = malloc(sizeof(char)+1);
   temp->currentWorker->name = malloc(sizeof(char)+1);
-  printf("Inside the enque after malloc.\n");
   copyWorker(temp->currentWorker, ele);
   if(queue->elements == 0)
     {
@@ -187,4 +186,20 @@ int checkSignals(queue* tempQ){
   }else{
     return 1;
   }
+}
+
+worker* getWorker(queue* q, char* name){
+  node* tempNode = q->head;
+  int counter = 0;
+  printf("in worker");
+  printf("QueueName: %s", q->name);
+  while( strcmp(name, tempNode->currentWorker->name) != 0)
+  {
+    printf("Name: %s", tempNode->currentWorker->name);
+    if(tempNode->currentWorker->tid == -2){
+      return tempNode->currentWorker;
+    }
+    tempNode = tempNode->after;
+  }
+  return tempNode->currentWorker;
 }

@@ -23,15 +23,12 @@ void *FileJob(void* temp)
     int pos = 0;
     char* storage = malloc(sizeof(char));
     int c = 0;
-    printf("Right before loop.\n");
     while((c = getc(fp)) != EOF){
-      printf("In loop.\n");
         storage[pos] = c;
         pos+=1;
         storage = realloc(storage, sizeof(char)*pos + 1);
 
     }
-    printf("middle of thread.\n");
     pos=0;
     //printf("Characters Caught %d\n", strlen(storage) );
     weezy->storage = (char*)malloc(sizeof(char)*strlen(storage)+ 1);
@@ -46,7 +43,6 @@ void *FileJob(void* temp)
     if(((worker*)temp)->op->lock == 1){
       pthread_mutex_unlock(&lock);
     }
-    printf("end of thread.\n");
     pthread_exit(NULL);
 }
 

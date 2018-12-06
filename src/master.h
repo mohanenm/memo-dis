@@ -30,7 +30,8 @@ void put(char* folderName, char* fileName, char* path){
     if(strcmp(path,"na")!= 0){
       queue* tempQ = malloc(sizeof(queue));
       tempQ = getHash(folderName,controller->director);
-      fileToDirectory(fileName,path,tempQ,folderName,getHash(folderName,controller->director)->size);
+    
+      fileToDirectory(fileName,path,tempQ,folderName,tempQ->size);
       //printf("%s\n",(char*)(getWorker(getHash(folderName,controller->director), fileName)->storage));
     }else{
       printf("File already exists.\n");

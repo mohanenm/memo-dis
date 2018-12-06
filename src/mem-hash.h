@@ -11,7 +11,7 @@ typedef struct DataItem {
 }DataItem;
 
 typedef struct Hash_Map{
-  DataItem* items;
+  DataItem** items;
   int size;
 }hash;
 
@@ -39,13 +39,16 @@ DataItem* createDataItem( queue* data){
 hash* createHashMap(int size){
   hash* result = (hash*)malloc(sizeof(hash));
   result->size = size;
-  result->items = (DataItem*)malloc(sizeof(DataItem)*size);
+  result->items = malloc(sizeof(DataItem*)*size);
+  for(int i = 0; i < size; i++){
+    result->items[i] = malloc(sizeof(DataItem));
+  }
 
   for(int i = 0; i < size; i++){
-    result->items[i].key = -1;
-    result->items[i].data = malloc(sizeof(queue));
-    result->items[i].next = (DataItem*)malloc(sizeof(DataItem));
-    result->items[i].next = createNullItem();
+    result->items[i]->key = -1;
+    result->items[i]->data = malloc(sizeof(queue));
+    result->items[i]->next = malloc(sizeof(DataItem));
+    result->items[i]->next = createNullItem();
   }
 
   return result;
@@ -53,16 +56,16 @@ hash* createHashMap(int size){
 
 void Insert(DataItem* item, hash* tempMap,char* tmpKey){
   long key = tmpKey[0]%(tempMap->size);
-  if(tempMap->items[key].key == -1){
+  if(tempMap->items[key]->key == -1){
     printf("%ld\n", key);
     item->key = key;
     setQueueName(item->data, tmpKey);
-    copyDataNewHash(&tempMap->items[key], item);
+    copyDataNewHash(tempMap->items[key], item);
   }else{
-    long temp = tempMap->items[key].key;
-    DataItem* tempItem = &tempMap->items[key];
+    long temp = tempMap->items[key]->key;
+    DataItem* tempItem = tempMap->items[key];
     while(temp != -1){
-      temp = tempMap->items[key].next->key;
+      temp = tempMap->items[key]->next->key;
       tempItem = tempItem->next;
     }
 
@@ -73,16 +76,16 @@ void Insert(DataItem* item, hash* tempMap,char* tmpKey){
 queue* getHash(char* key, hash* tempMap){
   long key2 = key[0]%(tempMap->size);
   printf("Current key: %ld \t Current name: %s\n", key2, key);
-  if(tempMap->items[key2].key != -1){
-    long temp = tempMap->items[key2].key;
-    DataItem* tempItem = &tempMap->items[key2];
+  if(tempMap->items[key2]->key != -1){
+    long temp = tempMap->items[key2]->key;
+    queue* tempItem = tempMap->items[key2]->data;
     while(temp != -1){
-      if(strcmp(key,tempItem->data->name) == 0){
-        printf("Within tempItem return. Queue name: %s\n", tempItem->data->name);
-        return tempItem->data;
+      if(strcmp(key,tempItem->name) == 0){
+        printf("Within tempItem return. Queue name: %s\n", tempItem->name);
+        return tempItem;
       }
-      temp = tempMap->items[key2].next->key;
-      tempItem = tempItem->next;
+      temp = tempMap->items[key2]->next->key;
+      tempItem = tempMap->items[key2]->next->data;
     }
   }else{
     printf("In Else\n");
@@ -113,11 +116,11 @@ void copyDataExistingHash(DataItem* old, DataItem* new){
 
 void freeHash(hash* tempMap){
   for(int i = 0; i < tempMap->size; i++){
-    long temp = tempMap->items[i].key;
-    DataItem* tempItem = &tempMap->items[i];
+    long temp = tempMap->items[i]->key;
+    DataItem* tempItem = tempMap->items[i];
     DataItem* tempItem2;
     while(temp != -1){
-      temp = tempMap->items[i].next->key;
+      temp = tempMap->items[i]->next->key;
       tempItem2 = tempItem->next;
       clearQueue(tempItem->data);
       free(tempItem);

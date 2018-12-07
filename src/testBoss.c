@@ -19,7 +19,7 @@ void main(int argc, char *args[]){
     printf("Enter a path to the file.\n");
     char* path = (char*)inputHandler(buffer);
     put(folderName,fileName,path);
-    get_all();
+    //get_all();
     free(path);
     free(fileName);
     free(folderName);

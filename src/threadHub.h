@@ -16,8 +16,11 @@ void *FileJob(void* temp)
       pthread_mutex_lock(&lock);
     }
     printf("%s\n", ((worker*)temp)->path);
-    //printf("\nCopying worker %d\n\n", (((worker*)temp)->tid));
+    //
     worker* weezy = malloc(sizeof(worker));
+    weezy->op = malloc(sizeof(OPERATION));
+    weezy->op->op = malloc(sizeof(char)+1);
+    printf("\nCopyied worker %ld\n\n", (((worker*)temp)->tid));
     copyWorker(weezy, (worker*)temp);
     FILE* fp = fopen(((worker*)temp)->path , "r");
     int pos = 0;

@@ -104,10 +104,14 @@ void enqueue(queue* queue, worker* ele)
   nullNode->currentWorker = malloc(sizeof(worker));
   nullNode->currentWorker->path = malloc(sizeof(char)+1);
   nullNode->currentWorker->name = malloc(sizeof(char)+1);
+  nullNode->currentWorker->op = malloc(sizeof(OPERATION));
+  nullNode->currentWorker->op->op = malloc(sizeof(char)+1);
   copyWorker(nullNode->currentWorker, createNullWorker());
   temp->currentWorker = malloc(sizeof(worker));
   temp->currentWorker->path = malloc(sizeof(char)+1);
   temp->currentWorker->name = malloc(sizeof(char)+1);
+  temp->currentWorker->op = malloc(sizeof(OPERATION));
+  temp->currentWorker->op->op = malloc(sizeof(char)+1);
   copyWorker(temp->currentWorker, ele);
   if(queue->elements == 0)
     {

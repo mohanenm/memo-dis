@@ -39,7 +39,7 @@ DataItem* createDataItem( queue* data){
 hash* createHashMap(int size){
   hash* result = (hash*)malloc(sizeof(hash));
   result->size = size;
-  result->items = malloc(sizeof(DataItem*)*size);
+  result->items = malloc(sizeof(DataItem)*size);
   for(int i = 0; i < size; i++){
     result->items[i] = malloc(sizeof(DataItem));
   }
@@ -47,6 +47,7 @@ hash* createHashMap(int size){
   for(int i = 0; i < size; i++){
     result->items[i]->key = -1;
     result->items[i]->data = malloc(sizeof(queue));
+    result->items[i]->data = createQueue(1);
     result->items[i]->next = malloc(sizeof(DataItem));
     result->items[i]->next = createNullItem();
   }
@@ -118,15 +119,21 @@ void freeHash(hash* tempMap){
   for(int i = 0; i < tempMap->size; i++){
     long temp = tempMap->items[i]->key;
     DataItem* tempItem = tempMap->items[i];
-    DataItem* tempItem2;
+    DataItem* tempItem2 = malloc(sizeof(DataItem));
     while(temp != -1){
+      printf("Freeing shit.\n");
       temp = tempMap->items[i]->next->key;
-      tempItem2 = tempItem->next;
-      clearQueue(tempItem->data);
-      free(tempItem);
-      tempItem = tempItem2;
-      free(tempItem2);
+      //tempItem2 = malloc(sizeof(DataItem));
+      tempItem2->data = malloc(sizeof(queue));
+      tempItem2->data = tempItem->data;
+      tempItem2 = tempItem;
+      printf("Freeing shit. %s\n", tempItem2->data->name);
+      clearQueue(tempItem2->data);
+      tempItem = tempItem->next;
+      //free(tempItem2);
     }
+    free(tempMap->items[i]);
   }
+  //free(tempMap->items);
   free(tempMap);
 }

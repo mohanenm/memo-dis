@@ -24,15 +24,13 @@ void init(int folders, int files){
 
 void put(char* folderName, char* fileName, char* path){
   if(wordCheck(controller->directories, folderName) == -1){
-    //addWordToDictionary(controller->directoies, fileName);
     createDirectory(folderName, controller->directories, controller->director, controller->FIF);
     printf("%s\n",controller->directories->val[0].word);
     if(strcmp(path,"na")!= 0){
-      queue* tempQ = malloc(sizeof(queue));
-      tempQ = getHash(folderName,controller->director);
-    
+      queue* tempQ = getHash(folderName,controller->director);
       fileToDirectory(fileName,path,tempQ,folderName,tempQ->size);
-      //printf("%s\n",(char*)(getWorker(getHash(folderName,controller->director), fileName)->storage));
+      worker* tempWorker = getWorker(getHash(folderName, controller->director),fileName);
+      printf("\nResult: %s\n", tempWorker->name);
     }else{
       printf("File already exists.\n");
     }
@@ -41,7 +39,7 @@ void put(char* folderName, char* fileName, char* path){
 }
 
 void get_all(){
-  //printf("%s\n", getHash("dbangz",controller->director)->name);
+  //printf("%s\n",(char*)(getWorker(getHash("test",controller->director),"test")->storage));
 }
 
 void done(){

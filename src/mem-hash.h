@@ -121,13 +121,12 @@ void freeHash(hash* tempMap){
     DataItem* tempItem = tempMap->items[i];
     DataItem* tempItem2 = malloc(sizeof(DataItem));
     while(temp != -1){
-      printf("Freeing shit.\n");
       temp = tempMap->items[i]->next->key;
       //tempItem2 = malloc(sizeof(DataItem));
       tempItem2->data = malloc(sizeof(queue));
       tempItem2->data = tempItem->data;
       tempItem2 = tempItem;
-      printf("Freeing shit. %s\n", tempItem2->data->name);
+      printf("Freeing. %s\n", tempItem2->data->name);
       clearQueue(tempItem2->data);
       tempItem = tempItem->next;
       //free(tempItem2);

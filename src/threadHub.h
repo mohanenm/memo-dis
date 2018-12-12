@@ -15,7 +15,7 @@ void *FileJob(void* temp)
     if(((worker*)temp)->op->lock == 1){
       pthread_mutex_lock(&lock);
     }
-    printf("%s\n", ((worker*)temp)->path);
+    //printf("Inside FileJob.%s\n", ((worker*)temp)->path);
     //
     worker* weezy = malloc(sizeof(worker));
     weezy->op = malloc(sizeof(OPERATION));
@@ -33,14 +33,14 @@ void *FileJob(void* temp)
 
     }
     pos=0;
-    //printf("Characters Caught %d\n", strlen(storage) );
     weezy->storage = (char*)malloc(sizeof(char)*strlen(storage)+ 1);
-    //printf("Storage: %s from thread %d \n", storage, weezy->tid);
+    //printf("Storage: %s from thread %ld \n", storage, weezy->tid);
     strcpy ((char*)weezy->storage,storage);
-    //rintf("AFTER Thread\n");
+    //printf("AFTER Thread\n");
     copyStorageString(((worker*)temp),weezy);
-    freeWorker(weezy);
-    free(storage);
+    //freeWorker(weezy);
+    //free(storage);
+    //printf("Inside thread %s\n", (char*)((worker*)temp)->storage);
     ((worker*)temp)->signal=3;
     fclose(fp);
     if(((worker*)temp)->op->lock == 1){
@@ -60,12 +60,16 @@ void threadHub(worker* thread,int size){
   void* status;
 
     if(strcmp(thread->op->op,"put") ==0 ){
+      printf("thread operation is put.\n ");
       thread->op->lock = 1;
       rc = pthread_create(&threads[0], &attr, FileJob, thread);
-      pthread_join(threads[0], &status);
+    }
+    int count =0;
+    pthread_join(threads[0], &status);
+    while(thread->signal != 3){
+      count+=1;
     }
 
-  printf("%s",(char*)thread->storage);
   pthread_attr_destroy(&attr);
 
 

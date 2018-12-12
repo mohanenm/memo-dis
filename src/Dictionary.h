@@ -156,10 +156,11 @@ void clearQueue(queue* temp)
   node* tempNode = temp->head;
   node* freeNode;
   free(temp->name);
-  while(tempNode->currentWorker->tid != -1)
+  while(tempNode->currentWorker->tid != -2)
   {
     freeNode = tempNode;
     tempNode= tempNode->after;
+    printf("freeing worker.\n");
     freeWorker(freeNode->currentWorker);
     free(freeNode);
   }

@@ -25,9 +25,7 @@ void main(int argc, char *args[]){
     free(folderName);
     free(buffer);
   }
-
- done();
-
+   done();
 }
 
 

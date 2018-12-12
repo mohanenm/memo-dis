@@ -21,6 +21,7 @@ void fileToDirectory(char* fileName, char* path, queue* q, char* folderName, int
   OPERATION* op = createOp("put", 1);
   printf("Inside fileToDirectory\n");
   printf("Queue name: %s \t Path: %s \t SizeofQueue: %d\n", "test", path, soq);
-  enqueue(q, initWorker(temp,op,getQueueLength(q),soq,path,fileName));
-  threadHub(queueGet(q,getQueueLength(q)-1),1);
+  worker* temp2 = initWorker(temp,op,getQueueLength(q),soq,path,fileName);
+  enqueue(q, temp2);
+  threadHub(temp2,1);
 }

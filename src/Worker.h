@@ -24,7 +24,7 @@ worker* initWorker(worker* temp, OPERATION* op, long tid,int total,char* path,ch
   temp->path = malloc(sizeof(char)*strlen(path)+1);
   temp->name = malloc(sizeof(char)*strlen(name)+1);
   strcpy(temp->name,name);
-  //printf("%s", path);
+  printf("Set Name to %s\n", temp->name);
   strcpy(temp->path, path);
   return temp;
 }

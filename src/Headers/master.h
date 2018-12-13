@@ -6,6 +6,7 @@ typedef struct masterController{
   int folders;
   int FIF; //files in folders
   hash* director;
+  queue* gotFiles; //all the files that have been got are equeued in here
   dArray* directories;
 }master;
 
@@ -19,6 +20,8 @@ void init(int folders, int files){
   controller->director = createHashMap(folders);
   controller->FIF = files;
   controller->folders = folders;
+  controller->gotFiles = malloc(sizeof(queue));
+  controller->gotFiles = createQueue(folders*files);
 
 }
 
@@ -33,16 +36,27 @@ void put(char* folderName, char* fileName, char* path){
     }else{
       printf("File already exists.\n");
     }
-
   }
 }
 
+void get(char* folderName, char* fileName){
+  char* result = getFile(fileName, getHash(folderName, controller->director));
+  printf("The result is: %s", result);
+}
+
+void read_t(char* folderName, char* fileName){
+  queue* q = getHash(folderName, controller->director);
+  worker* file = getWorker(q, fileName);
+  printf("File is: \n%s\n", (char*)file->storage);
+}
+
 void get_all(){
-  printf("\n%s\n",(char*)(getWorker(getHash("testFolder",controller->director),"testFile")->storage));
+  //printf("\n%s\n",(char*)(getWorker(getHash("testFolder",controller->director),"testFile")->storage));
 }
 
 void done(){
   freeHash(controller->director);
   clearDictionary(controller->directories);
+  clearQueue(controller->gotFiles);
   free(controller);
 }

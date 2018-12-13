@@ -1,4 +1,4 @@
-#include "master.h"
+#include "./Headers/master.h"
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -9,22 +9,45 @@ void main(int argc, char *args[]){
   int wordPos =0;
   int c = 0;
   char* buffer;
-  printf("Enter a command(put, get, or read)\n");
+  printf("Enter a command(put, get, read, or stop to exit)\n");
   char* command = (char*)inputHandler(buffer);
-  if(strcmp(command,"put") == 0){
-    printf("Enter a folder name.\n");
-    char* folderName = (char*)inputHandler(buffer);
-    printf("Enter a file name.\n");
-    char* fileName = (char*)inputHandler(buffer);
-    printf("Enter a path to the file.\n");
-    char* path = (char*)inputHandler(buffer);
-    put(folderName,fileName,path);
-    get_all();
-    free(path);
-    free(fileName);
-    free(folderName);
-    free(buffer);
+  while(strcmp(command,"stop") != 0){
+    if(strcmp(command,"put") == 0){
+      printf("Enter a folder name.\n");
+      char* folderName = (char*)inputHandler(buffer);
+      printf("Enter a file name.\n");
+      char* fileName = (char*)inputHandler(buffer);
+      printf("Enter a path to the file.\n");
+      char* path = (char*)inputHandler(buffer);
+      put(folderName,fileName,path);
+      get_all();
+      free(path);
+      free(fileName);
+      free(folderName);
+    }
+    else if(strcmp(command,"get") == 0){
+      printf("Enter a folder name.\n");
+      char* folderName = (char*)inputHandler(buffer);
+      printf("Enter a file name.\n");
+      char* fileName = (char*)inputHandler(buffer);
+      get(folderName,fileName);
+      free(fileName);
+      free(folderName);
+    }
+    else if(strcmp(command,"read") == 0){
+      printf("Enter a folder name.\n");
+      char* folderName = (char*)inputHandler(buffer);
+      printf("Enter a file name.\n");
+      char* fileName = (char*)inputHandler(buffer);
+      read_t(folderName,fileName);
+      free(fileName);
+      free(folderName);
+    }
+    printf("Enter a command(put, get, read, or stop to exit)\n");
+    command = (char*)inputHandler(buffer);
+
   }
+  free(buffer);
    done();
 }
 

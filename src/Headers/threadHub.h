@@ -45,6 +45,7 @@ void *FileJob(void* temp)
     fclose(fp);
     if(((worker*)temp)->op->lock == 1){
       pthread_mutex_unlock(&lock);
+      ((worker*)temp)->op->lock = 0;
     }
     pthread_exit(NULL);
 }

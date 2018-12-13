@@ -30,10 +30,7 @@ DataItem* createNullItem(){
 
 DataItem* createDataItem( queue* data){
   DataItem* item = malloc(sizeof(DataItem));
-  item->data = createQueue(data->size);
-  for(int i = 0; i < data->size; i++){
-    enqueue(item->data, queueGet(data, i));
-  }
+  item->data = data;
   return item;
 }
 hash* createHashMap(int size){
@@ -98,13 +95,9 @@ queue* getHash(char* key, hash* tempMap){
 }
 
 void copyDataNewHash(DataItem* old, DataItem* temp){
-  old->data = createQueue(temp->data->size);
-  setQueueName(old->data, temp->data->name);
+  old->data = temp->data;
   old->key = temp->key;
   printf("In new hash\n");
-  for(int i = 0; i< temp->data->size; i++){
-    enqueue(old->data, queueGet(temp->data,i));
-  }
 }
 
 void copyDataExistingHash(DataItem* old, DataItem* new){

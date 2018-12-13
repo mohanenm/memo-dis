@@ -38,7 +38,7 @@ void put(char* folderName, char* fileName, char* path){
 }
 
 void get_all(){
-  //printf("%s\n",(char*)(getWorker(getHash("test",controller->director),"test")->storage));
+  printf("\n%s\n",(char*)(getWorker(getHash("testFolder",controller->director),"testFile")->storage));
 }
 
 void done(){

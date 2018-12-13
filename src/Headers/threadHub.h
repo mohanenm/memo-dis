@@ -6,10 +6,7 @@
 
 
 pthread_mutex_t lock;
-
-//idea for dividing up a text file job
-//TAKE A LETTER AND DELETE IT
-//TODO ADD IF STATEMENT AND ADD VALUE TO WORKER
+//Creates a file
 void *FileJob(void* temp)
 {
     if(((worker*)temp)->op->lock == 1){
@@ -20,7 +17,6 @@ void *FileJob(void* temp)
     worker* weezy = malloc(sizeof(worker));
     weezy->op = malloc(sizeof(OPERATION));
     weezy->op->op = malloc(sizeof(char)+1);
-    printf("\nCopyied worker %ld\n\n", (((worker*)temp)->tid));
     copyWorker(weezy, (worker*)temp);
     FILE* fp = fopen(((worker*)temp)->path , "r");
     int pos = 0;
@@ -61,7 +57,6 @@ void threadHub(worker* thread,int size){
   void* status;
 
     if(strcmp(thread->op->op,"put") ==0 ){
-      printf("thread operation is put.\n ");
       thread->op->lock = 1;
       rc = pthread_create(&threads[0], &attr, FileJob, thread);
     }

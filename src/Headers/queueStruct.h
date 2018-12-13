@@ -112,7 +112,6 @@ void enqueue(queue* queue, worker* ele)
   temp->currentWorker->name = malloc(sizeof(char)+1);
   temp->currentWorker->op = malloc(sizeof(OPERATION));
   temp->currentWorker->op->op = malloc(sizeof(char)+1);
-  printf("Inside queue with element %s \n", ele->name);
   copyWorker(temp->currentWorker, ele);
   if(queue->elements == 0)
     {
@@ -194,17 +193,14 @@ int checkSignals(queue* tempQ){
 }
 
 worker* getWorker(queue* q, char* name){
-  node* tempNode = q->head;
+  node tempNode = *q->head;
   int counter = 0;
-  printf("in worker");
-  printf("QueueName: %s", q->name);
-  while( strcmp(name, tempNode->currentWorker->name) != 0)
+  while( strcmp(name, tempNode.currentWorker->name) != 0)
   {
-    printf("Name: %s", tempNode->currentWorker->name);
-    if(tempNode->currentWorker->tid == -2){
-      return tempNode->currentWorker;
+    if(tempNode.currentWorker->tid == -2){
+      return tempNode.currentWorker;
     }
-    tempNode = tempNode->after;
+    tempNode = *tempNode.after;
   }
-  return tempNode->currentWorker;
+  return tempNode.currentWorker;
 }

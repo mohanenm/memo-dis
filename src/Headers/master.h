@@ -28,14 +28,11 @@ void init(int folders, int files){
 void put(char* folderName, char* fileName, char* path){
   if(wordCheck(controller->directories, folderName) == -1){
     createDirectory(folderName, controller->directories, controller->director, controller->FIF);
-    printf("%s\n",controller->directories->val[0].word);
-    if(strcmp(path,"na")!= 0){
-      fileToDirectory(fileName,path,getHash(folderName, controller->director),folderName,getHash(folderName, controller->director)->size);
-      worker* tempWorker = getWorker(getHash(folderName, controller->director),fileName);
-      printf("\nResult: %s\n", tempWorker->name);
-    }else{
-      printf("File already exists.\n");
     }
+  if(strcmp(path,"na")!= 0){
+    fileToDirectory(fileName,path,getHash(folderName, controller->director),folderName,getHash(folderName, controller->director)->size);
+  }else{
+    printf("File already exists.\n");
   }
 }
 

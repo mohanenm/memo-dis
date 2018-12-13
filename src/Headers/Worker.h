@@ -24,7 +24,6 @@ worker* initWorker(worker* temp, OPERATION* op, long tid,int total,char* path,ch
   temp->path = malloc(sizeof(char)*strlen(path)+1);
   temp->name = malloc(sizeof(char)*strlen(name)+1);
   strcpy(temp->name,name);
-  printf("Set Name to %s\n", temp->name);
   strcpy(temp->path, path);
   return temp;
 }
@@ -61,6 +60,11 @@ void copyWorker(worker* temp, worker* weezy){
   temp->total = weezy->total;
   temp->path = malloc(sizeof(char)*strlen(weezy->path) + 1);
   temp->name = malloc(sizeof(char)* strlen(weezy->name)+1 );
+  if(strlen(temp->name) > 1){
+    for(int i =0; i< strlen(temp->name); i++){
+      temp->name[i] = '\0';
+    }
+  }
   strcpy(temp->name, weezy->name);
   strcpy(temp->path, weezy->path);
 }

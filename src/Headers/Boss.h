@@ -8,7 +8,6 @@
 
 
 void createDirectory(char* directoryName, dArray* directories, hash* hashMap, int size){
-  printf("Inside create Directory\n");
   queue* directory = createQueue(size);
   setQueueName(directory, directoryName);
   addWordToDictionary(directories, directoryName);
@@ -19,12 +18,9 @@ void createDirectory(char* directoryName, dArray* directories, hash* hashMap, in
 void fileToDirectory(char* fileName, char* path, queue* q, char* folderName, int soq){
   worker* temp = createBlankWorker();
   OPERATION* op = createOp("put", 1);
-  printf("Inside fileToDirectory\n");
-  printf("Queue name: %s \t Path: %s \t SizeofQueue: %d\n", q->name, path, soq);
   worker* temp2 = initWorker(temp,op,soq,soq,path,fileName);
-  //TODO check how temp2 acts going through the enqueue
   enqueue(q, temp2);
-  threadHub(q->head->currentWorker,1);
+  threadHub(getWorker(q,fileName),1);
 }
 
 char* getFile(char* fileName, queue* q){

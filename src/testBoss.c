@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-char* inputHandler(char* buffer);
+char* inputHandler();
 
 void main(int argc, char *args[]){
   init(4,2);
@@ -10,15 +10,16 @@ void main(int argc, char *args[]){
   int c = 0;
   char* buffer;
   printf("Enter a command(put, get, read, or stop to exit)\n");
-  char* command = (char*)inputHandler(buffer);
+  char* command = (char*)inputHandler();
   while(strcmp(command,"stop") != 0){
     if(strcmp(command,"put") == 0){
+      char* buffer;
       printf("Enter a folder name.\n");
-      char* folderName = (char*)inputHandler(buffer);
+      char* folderName = (char*)inputHandler();
       printf("Enter a file name.\n");
-      char* fileName = (char*)inputHandler(buffer);
+      char* fileName = (char*)inputHandler();
       printf("Enter a path to the file.\n");
-      char* path = (char*)inputHandler(buffer);
+      char* path = (char*)inputHandler();
       put(folderName,fileName,path);
       get_all();
       free(path);
@@ -26,25 +27,27 @@ void main(int argc, char *args[]){
       free(folderName);
     }
     else if(strcmp(command,"get") == 0){
+      char* buffer;
       printf("Enter a folder name.\n");
-      char* folderName = (char*)inputHandler(buffer);
+      char* folderName = (char*)inputHandler();
       printf("Enter a file name.\n");
-      char* fileName = (char*)inputHandler(buffer);
+      char* fileName = (char*)inputHandler();
       get(folderName,fileName);
       free(fileName);
       free(folderName);
     }
     else if(strcmp(command,"read") == 0){
+      char* buffer;
       printf("Enter a folder name.\n");
-      char* folderName = (char*)inputHandler(buffer);
+      char* folderName = (char*)inputHandler();
       printf("Enter a file name.\n");
-      char* fileName = (char*)inputHandler(buffer);
+      char* fileName = (char*)inputHandler();
       read_t(folderName,fileName);
       free(fileName);
       free(folderName);
     }
     printf("Enter a command(put, get, read, or stop to exit)\n");
-    command = (char*)inputHandler(buffer);
+    command = (char*)inputHandler();
 
   }
   free(buffer);
@@ -54,10 +57,10 @@ void main(int argc, char *args[]){
 
 
 
-char* inputHandler(char* buffer){
+char* inputHandler(){
   int wordPos =0;
   int c = 0;
-  buffer = malloc(sizeof(128));
+  char* buffer = malloc(sizeof(128));
   while((c = getchar()) != '\n'){
     buffer[wordPos] = c;
     wordPos+=1;

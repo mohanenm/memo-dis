@@ -62,9 +62,11 @@ void Insert(DataItem* item, hash* tempMap,char* tmpKey){
   }else{
     long temp = tempMap->items[key]->key;
     DataItem* tempItem = tempMap->items[key];
+    tempItem->key = temp;
     while(temp != -1){
       temp = tempMap->items[key]->next->key;
       tempItem = tempItem->next;
+      tempItem->key = temp;
     }
 
     copyDataExistingHash(tempItem, item);
@@ -73,20 +75,17 @@ void Insert(DataItem* item, hash* tempMap,char* tmpKey){
 
 queue* getHash(char* key, hash* tempMap){
   long key2 = key[0]%(tempMap->size);
-  printf("Current key: %ld \t Current name: %s\n", key2, key);
   if(tempMap->items[key2]->key != -1){
     long temp = tempMap->items[key2]->key;
     queue* tempItem = tempMap->items[key2]->data;
     while(temp != -1){
       if(strcmp(key,tempItem->name) == 0){
-        printf("Within tempItem return. Queue name: %s\n", tempItem->name);
         return tempItem;
       }
       temp = tempMap->items[key2]->next->key;
       tempItem = tempMap->items[key2]->next->data;
     }
   }else{
-    printf("In Else\n");
     queue* noQueue = createQueue(1);
     noQueue->name = malloc(sizeof(char)*strlen("none")+1);
     strcpy(noQueue->name,"none");
@@ -97,15 +96,11 @@ queue* getHash(char* key, hash* tempMap){
 void copyDataNewHash(DataItem* old, DataItem* temp){
   old->data = temp->data;
   old->key = temp->key;
-  printf("In new hash\n");
 }
 
-void copyDataExistingHash(DataItem* old, DataItem* new){
-  old->next->data = createQueue(new->data->size);
-  printf("In existing hash\n");
-  for(int i = 0; i< new->data->size; i++){
-    enqueue(old->next->data, queueGet(new->data,i));
-  }
+void copyDataExistingHash(DataItem* old, DataItem* temp){
+  old->next->data = temp->data;
+  old->next->key = temp->key;
 }
 
 void freeHash(hash* tempMap){
@@ -119,7 +114,6 @@ void freeHash(hash* tempMap){
       tempItem2->data = malloc(sizeof(queue));
       tempItem2->data = tempItem->data;
       tempItem2 = tempItem;
-      printf("Freeing. %s\n", tempItem2->data->name);
       clearQueue(tempItem2->data);
       tempItem = tempItem->next;
       //free(tempItem2);

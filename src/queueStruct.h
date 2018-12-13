@@ -112,6 +112,7 @@ void enqueue(queue* queue, worker* ele)
   temp->currentWorker->name = malloc(sizeof(char)+1);
   temp->currentWorker->op = malloc(sizeof(OPERATION));
   temp->currentWorker->op->op = malloc(sizeof(char)+1);
+  printf("Inside queue with element %s \n", ele->name);
   copyWorker(temp->currentWorker, ele);
   if(queue->elements == 0)
     {

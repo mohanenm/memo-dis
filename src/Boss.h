@@ -17,11 +17,12 @@ void createDirectory(char* directoryName, dArray* directories, hash* hashMap, in
 }
 
 void fileToDirectory(char* fileName, char* path, queue* q, char* folderName, int soq){
-  worker* temp = malloc(sizeof(worker));
+  worker* temp = createBlankWorker();
   OPERATION* op = createOp("put", 1);
   printf("Inside fileToDirectory\n");
-  printf("Queue name: %s \t Path: %s \t SizeofQueue: %d\n", "test", path, soq);
-  worker* temp2 = initWorker(temp,op,getQueueLength(q),soq,path,fileName);
+  printf("Queue name: %s \t Path: %s \t SizeofQueue: %d\n", q->name, path, soq);
+  worker* temp2 = initWorker(temp,op,soq,soq,path,fileName);
+  //TODO check how temp2 acts going through the enqueue
   enqueue(q, temp2);
-  threadHub(temp2,1);
+  threadHub(q->head->currentWorker,1);
 }

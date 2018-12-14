@@ -8,8 +8,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 #set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
  
 # Locate GTest
-find_package(gtest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIRS})
+#find_package(gtest REQUIRED)
+
+include_directories(Headers/*)
  
 # Link runTests with what we want to test and the GTest and pthread library
 add_executable(test.o testBoss.c)

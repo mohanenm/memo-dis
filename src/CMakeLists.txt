@@ -12,7 +12,7 @@ find_package(gtest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
  
 # Link runTests with what we want to test and the GTest and pthread library
-add_executable(mem-hash mem-hash.c)
+add_executable(test.o testBoss.c)
 
 #add_executable(word_entry_tests word_entry_tests.cc word_entry.cc)
 #target_link_libraries(word_entry_tests ${GTEST_LIBRARIES} pthread)
